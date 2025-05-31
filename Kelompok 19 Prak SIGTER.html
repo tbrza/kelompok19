@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teknik Geomatika UPN "Veteran" Yogyakarta</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <!-- Leaflet Routing Machine CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+
+  <style>
+    /* Style untuk website 1 */
+    .text-justify { text-align: justify; }
+    .semi-bold { font-weight: 600; }
+    .map-container { text-align: center; }
+    .map-container img { 
+      width: 600px; 
+      height: 400px; 
+      object-fit: cover; 
+    }
+    .content-page { display: none; }
+    .active { display: block; }
+
+    /* Style khusus untuk halaman interactive map (website 2) */
+    /* Pastikan konten peta interaktif tampil full height */
+    #petaInteractiveContent {
+      height: calc(100vh - 150px);
+    }
+    .interactive-container {
+      display: flex;
+      height: 100%;
+    }
+    .sidebar {
+      width: 300px;
+      padding: 20px;
+      background: #f9f9f9;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .interactive-map {
+      flex: 1;
+      position: relative;
+    }
+    .interactive-map #map {
+      height: 100%;
+      width: 100%;
+    }
+    .legend {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      padding: 10px;
+      font-size: 14px;
+      line-height: 18px;
+      color: #333;
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    .legend h4 { margin: 0 0 5px; font-size: 16px; }
+    .legend .item { display: flex; align-items: center; margin-bottom: 5px; }
+    .legend .color-box {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+    .legend .putra { background-color: blue; }
+    .legend .putri { background-color: red; }
+    .legend .umum { background-color: green; }
+
+    /* Button dan form di sidebar */
+    .sidebar button {
+      padding: 8px 12px;
+      margin-top: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .sidebar button:hover { background: #0056b3; }
+    .sidebar input[type="text"], .sidebar select {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 5px;
+      box-sizing: border-box;
+    }
+    .sidebar label { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <!-- Navbar yang sama untuk kedua website -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+    <div class="container">
+      <!-- Klik brand kembali ke Beranda -->
+      <a class="navbar-brand fw-bold" href="#" id="showHome">UPN "Veteran" Yogyakarta</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <!-- Menu Home (website1) -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="navbarHome">Beranda</a>
+          </li>
+          <!-- Menu Peta & Jenis Peta (website1) -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="showPeta">Peta &amp; Jenis Peta</a>
+          </li>
+          <!-- Menu Contoh Peta (website1) -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="showContohPeta">Contoh Peta</a>
+          </li>
+          <!-- Menu baru: Peta Interactive (website2) -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="showPetaInteractive">Peta Interactive</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Halaman Beranda (Website 1) -->
+  <div class="container my-4 content-page active" id="homeContent">
+    <div class="row">
+      <aside class="col-md-3 mb-4">
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action">KBK Terestris</a>
+          <a href="#" class="list-group-item list-group-item-action">KBK Sistem Informasi Geografis</a>
+          <a href="#" class="list-group-item list-group-item-action">KBK Fotogrametri</a>
+          <a href="#" class="list-group-item list-group-item-action">KBK Penginderaan Jauh</a>
+        </div>
+      </aside>
+      <article class="col-md-6 mb-4">
+        <h2 class="mb-3 text-center">Pengantar SIG Berbasis Internet</h2>
+        <div class="semi-bold">
+          <p class="text-justify">
+            Salah satu mata kuliah yang termasuk dalam KBK Sistem Informasi Geografis (SIG) adalah SIG Berbasis Internet. 
+            Pada mata kuliah ini mahasiswa mempelajari pengaplikasian SIG dengan berbasis pada platform internet. 
+            Mahasiswa mempelajari konsep kerja internet, proses <em>request</em> dan <em>respond</em> oleh <em>user</em> dan <em>client</em>, 
+            serta pembangunan website itu sendiri.
+          </p>
+          <p class="text-justify">
+            Memahami HTML dan CSS merupakan langkah selanjutnya bagi mahasiswa yang membuat halaman website. 
+            Kali ini, salah satu tugas adalah membangun tampilan halaman web sederhana ini. 
+            Selanjutnya halaman sederhana ini dikembangkan kembali dengan mengaplikasikan penggunaan Bootstrap.
+          </p>
+        </div>
+      </article>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <img src="https://th.bing.com/th/id/R.d03d8d2ed3d5375ffe9e38134daa5789?rik=J8j%2fYbZicPoxRw&riu=http%3a%2f%2fwww.ezega.com%2fuserfiles%2fOnline-world.jpg&ehk=I3wVFR8tYKA8Ld9p9qr6qZzDHWt74wfiDe8fNi%2f7zdI%3d&risl=&pid=ImgRaw&r=0" 
+               class="card-img-top" alt="Representasi Dunia Online">
+          <div class="card-body">
+            <p class="card-text text-center">Dunia digital yang direpresentasikan melalui jaringan koneksi global.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman Peta & Jenis Peta (Website 1) -->
+  <div class="container my-4 content-page" id="petaContent">
+    <h2 class="mb-3 text-center">Peta &amp; Jenis Peta</h2>
+    <div class="semi-bold">
+      <p class="text-justify">
+        Pada halaman ini, kita akan membahas mengenai Peta beserta jenis-jenis peta. Peta adalah representasi visual dari permukaan bumi yang menggambarkan elemen-elemen geografi secara simbolis. 
+        Peta digunakan untuk menampilkan lokasi, jarak, hubungan spasial, serta fitur fisik dan budaya yang ada di suatu wilayah.
+      </p>
+      
+      <h4>Peta Statis</h4>
+      <p class="text-justify">
+        Peta statis adalah peta yang disajikan dalam bentuk tetap dan tidak berubah, baik secara digital maupun cetak. Informasi yang ditampilkan pada peta statis bersifat tetap (non-interaktif), artinya pengguna tidak dapat mengubah, memperbesar, memperkecil, atau mengeksplorasi data secara dinamis langsung dari peta tersebut. 
+      <h5>Karakteristik Peta Statis</h5>
+      <h6>1. Tidak Interaktif</h6>
+      <h6>Pengguna hanya dapat melihat informasi yang telah ditentukan oleh pembuat peta, tanpa fitur zoom, klik objek, atau perubahan tampilan.</h6>
+      <h6>2. Format Tetap</h6>
+      <h6>Biasanya disajikan dalam format cetak (kertas) atau gambar digital (misalnya JPEG, PNG, PDF).</h6>
+      <h6>3. Informasi Terbatas</h6>
+      <h6>Hanya informasi yang dipilih oleh pembuat peta yang akan terlihat, karena tidak ada fitur untuk mengganti layer atau menampilkan data tambahan.</h6>
+      <h6>4. Presisi Visual Tinggi</h6>
+      <h6>Umumnya dirancang dengan tata letak dan elemen kartografi yang terencana, seperti legenda, skala, arah utara, judul, dan sumber data.</h6>
+      <h5>Contoh Penggunaan Peta Statis</h5>
+      <h6>a. Peta tematik dalam laporan penelitian</h6>
+      <h6>b. Peta administratif dalam buku geografi</h6>
+      <h6>c. Peta zonasi risiko bencana untuk leaflet atau poster</h6>
+      <h6>d. Peta lokasi kantor polisi tambahan dalam laporan geodesain</h6>
+   
+      <p class="text-justify">
+      </p>
+      <div class="map-container mb-4">
+      </div>
+      
+      <h4>Peta Dinamis</h4>
+      <p class="text-justify">
+        Peta dinamis adalah peta digital yang memungkinkan pengguna untuk berinteraksi secara langsung dengan informasi spasial yang ditampilkan. Berbeda dengan peta statis (seperti peta cetak atau gambar digital biasa), peta dinamis dapat berubah-ubah secara real-time atau berdasarkan input pengguna, seperti zoom in/out, panning, klik pada objek tertentu, hingga pemfilteran data berdasarkan kriteria tertentu. 
+      </p>
+      <h5>Ciri-ciri Peta Dinamis</h5>
+      <h6>1. Interaktif</h6>
+      <h6>Pengguna bisa berinteraksi dengan elemen-elemen di peta, seperti melihat detail informasi dengan mengklik objek (pop-up), mengatur layer, atau menelusuri rute.</h6>
+      <h6>2. Real-time</h6>
+      <h6>Dapat menampilkan data yang diperbarui secara langsung, seperti kondisi lalu lintas, cuaca, atau posisi kendaraan.</h6>
+      <h6>3. Multi-layer</h6>
+      <h6>Peta dapat terdiri dari beberapa lapisan (layer) informasi yang dapat diaktifkan/di-nonaktifkan sesuai kebutuhan analisis.</h6>
+      <h6>4. Dapat Disesuaikan</h6>
+      <h6>Visualisasi, simbol, dan atribut peta dapat disesuaikan berdasarkan input pengguna atau pengaturan sistem.</h6>
+      <h5>Contoh Penggunaan Peta Dinamis</h5>
+      <h6>a. Sistem Informasi Geografis (SIG) Web-Base seperti ArcGIS Online, Google Maps, Leaflet, dan OpenStreetMap.</h6>
+      <h6>b. Monitoring Bencana Alam melalui peta sebaran gempa, banjir, atau hotspot kebakaran hutan secara real-time.</h6>
+      <h6>c. Pemetaan Infrastruktur dan Tata Ruang untuk perencanaan wilayah, pemantauan pembangunan, atau analisis lokasi layanan publik.</h6>
+      <h6>d. Transportasi dan Navigasi melalui Peta kondisi lalu lintas atau pelacakan kendaraan secara langsung (misalnya pada Gojek atau Grab).</h6>
+      <div class="map-container mb-4">
+      </div>
+      
+      <div class="text-center">
+        <button id="backToHomeFromPeta" class="btn btn-secondary">Kembali ke Beranda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman Contoh Peta (Website 1) -->
+  <div class="container my-4 content-page" id="contohPetaContent">
+    <h2 class="mb-3 text-center">Contoh Peta</h2>
+    <div class="semi-bold">
+      <h4>Contoh Peta Statis</h4>
+      <div class="map-container mb-4">
+        <img src="https://petatematikindo.wordpress.com/wp-content/uploads/2013/03/administrasi-di-yogyakarta-a1-1.jpg" alt="Contoh Peta Statis">
+      </div>
+      <h4>Contoh Peta Dinamis</h4>
+      <div class="map-container mb-4">
+        <img src="https://watugedekediri.wordpress.com/wp-content/uploads/2020/06/peta-kerawanan-banjir-puncu.png" class="card-img-top" class="card-img-top" alt="Contoh Peta Dinamis">
+      </div>
+      <div class="text-center">
+        <button id="backToPetaFromContoh" class="btn btn-secondary">Kembali ke Peta &amp; Jenis Peta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman Peta Interactive (Gabungan website 2) -->
+  <div class="content-page" id="petaInteractiveContent">
+    <div class="interactive-container">
+      <div class="sidebar">
+        <h2>Pondok Pesantren Al-Munawwir</h2>
+        <ol>
+          <li>Gunakan kontrol zoom pada peta untuk memperbesar atau memperkecil tampilan.</li>
+          <li>Klik fitur pada peta untuk menampilkan informasi bangunan.</li>
+          <li>Klik tombol "Lokasi Pesantren" untuk menampilkan ke lokasi pondok pesantren.</li>
+        </ol>
+        <button id="pesantrenBtn">Lokasi Pesantren</button>
+        <hr>
+        <h3>Rute</h3>
+        <p>Masukkan lokasi awal dan tujuan (longitude, latitude atau nama tempat). Rute ditampilkan dengan garis warna kuning pada peta:</p>
+        <label for="start">Lokasi Awal:</label>
+        <input type="text" id="start" placeholder="Contoh: 110.4099, -7.7622">
+        <label for="destination">Lokasi Tujuan:</label>
+        <input type="text" id="destination" placeholder="Contoh: 110.6235, -7.7496">
+        <select id="travelMode">
+          <option value="driving">Kendaraan</option>
+          <option value="walking">Jalan Kaki</option>
+          <option value="cycling">Sepeda</option>
+        </select>
+        <button id="routeBtn">Cari Rute</button>
+        <p><small>Contoh: <em>Rowo Jombor, Klaten</em></small></p>
+      </div>
+      <div class="interactive-map">
+        <div id="map"></div>
+        <div class="legend">
+          <h4>Legenda</h4>
+          <div class="item"><div class="color-box putra"></div> Asrama Putra</div>
+          <div class="item"><div class="color-box putri"></div> Asrama Putri</div>
+          <div class="item"><div class="color-box umum"></div> Bangunan Umum</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-warning text-center py-2">
+    <div class="container">
+      <p class="mb-0">&copy; Copyright @Tabriza Kultsum Ariesta_117220027</p>
+    </div>
+  </footer>
+
+  <!-- Script JS: Bootstrap & lainnya -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Leaflet Routing Machine -->
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+  <script>
+    // Fungsi untuk menampilkan halaman konten berdasarkan id
+    function showPage(pageId) {
+      document.querySelectorAll('.content-page').forEach(function(page) {
+        page.classList.remove('active');
+      });
+      document.getElementById(pageId).classList.add('active');
+    }
+
+    // Event listener untuk navigasi di navbar
+    document.getElementById('navbarHome').addEventListener('click', function(e) {
+      e.preventDefault();
+      showPage('homeContent');
+    });
+    document.getElementById('showPeta').addEventListener('click', function(e) {
+      e.preventDefault();
+      showPage('petaContent');
+    });
+    document.getElementById('showContohPeta').addEventListener('click', function(e) {
+      e.preventDefault();
+      showPage('contohPetaContent');
+    });
+    document.getElementById('showPetaInteractive').addEventListener('click', function(e) {
+      e.preventDefault();
+      showPage('petaInteractiveContent');
+      // Invalidate ukuran peta agar tampil sempurna
+      setTimeout(function() {
+        map.invalidateSize();
+      }, 100);
+    });
+
+    // Tombol navigasi kembali
+    document.getElementById('backToHomeFromPeta').addEventListener('click', function() {
+      showPage('homeContent');
+    });
+    document.getElementById('backToPetaFromContoh').addEventListener('click', function() {
+      showPage('petaContent');
+    });
+
+    // Inisialisasi peta untuk Peta Interactive
+    var map = L.map('map').setView([-7.826417, 110.361441], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Fungsi untuk menambahkan layer GeoJSON (jika file tersedia)
+    function addGeoJSONLayer(filePath, styleOptions) {
+      fetch(filePath)
+        .then(response => {
+          if (!response.ok) throw new Error('Network error: ' + response.statusText);
+          return response.json();
+        })
+        .then(data => {
+          L.geoJSON(data, {
+            style: styleOptions,
+            onEachFeature: function(feature, layer) {
+              var name = feature.properties?.name || 'Informasi';
+              layer.bindPopup(name);
+            }
+          }).addTo(map);
+        })
+        .catch(err => {
+          console.error('Gagal memuat', filePath, err);
+        });
+    }
+    
+       addGeoJSONLayer('smpkotayogyakarta', { color: 'blue', weight: 2, fillOpacity: 0.3 });
+       
+
+    // Tombol "Lokasi Pesantren"
+    var pesantrenCoords = [-7.826417, 110.361441];
+    document.getElementById('pesantrenBtn').addEventListener('click', function() {
+      map.flyTo(pesantrenCoords, 17);
+    });
+
+    // Routing menggunakan Leaflet Routing Machine
+    let routingControl;
+    function resolveLocation(input) {
+      return new Promise((resolve, reject) => {
+        if (input.includes(',')) {
+          let parts = input.split(',').map(s => parseFloat(s.trim()));
+          if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+            resolve(L.latLng(parts[1], parts[0]));
+          } else {
+            reject("Format koordinat salah");
+          }
+        } else {
+          fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(input)}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.length > 0) {
+                resolve(L.latLng(parseFloat(data[0].lat), parseFloat(data[0].lon)));
+              } else {
+                reject("Tempat tidak ditemukan.");
+              }
+            })
+            .catch(err => reject("Error saat geocoding: " + err));
+        }
+      });
+    }
+    document.getElementById('routeBtn').addEventListener('click', function() {
+      let start = document.getElementById('start').value.trim();
+      let end = document.getElementById('destination').value.trim();
+      let mode = document.getElementById('travelMode').value;
+
+      if (!start || !end) {
+        alert("Lengkapi lokasi awal dan tujuan.");
+        return;
+      }
+
+      Promise.all([resolveLocation(start), resolveLocation(end)])
+        .then(([startLoc, endLoc]) => {
+          if (routingControl) map.removeControl(routingControl);
+          routingControl = L.Routing.control({
+            waypoints: [startLoc, endLoc],
+            router: L.Routing.osrmv1({
+              serviceUrl: 'https://router.project-osrm.org/route/v1',
+              profile: mode
+            }),
+            lineOptions: { styles: [{ color: 'red', weight: 5, opacity: 0.8 }] },
+            createMarker: function(i, waypoint) {
+              return L.marker(waypoint.latLng);
+            },
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fitSelectedRoutes: true,
+            showAlternatives: false
+          }).addTo(map);
+          map.flyTo(endLoc, 16);
+        })
+        .catch(error => alert(error));
+    });
+  </script>
+</body>
+</html>

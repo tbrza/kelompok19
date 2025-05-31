@@ -1,0 +1,23 @@
+{
+"type": "FeatureCollection",
+"name": "smpkotayogyakarta",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32749" } },
+"features": [
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 1 Yogyakarta", "X": 431138.4164, "Y": 9140256.2917 }, "geometry": { "type": "Point", "coordinates": [ 431138.416399999987334, 9140256.2917 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 2 Yogyakarta", "X": 430298.1021, "Y": 9137550.0975000001 }, "geometry": { "type": "Point", "coordinates": [ 430298.102100000018254, 9137550.097500000149012 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 3 Yogyakarta", "X": 429944.2761, "Y": 9138278.5161000006 }, "geometry": { "type": "Point", "coordinates": [ 429944.276100000017323, 9138278.516100000590086 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 4 Yogyakarta", "X": 430855.798, "Y": 9138298.2093000002 }, "geometry": { "type": "Point", "coordinates": [ 430855.798, 9138298.209300000220537 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 5 Yogyakarta", "X": 431173.5407, "Y": 9139187.6633000001 }, "geometry": { "type": "Point", "coordinates": [ 431173.540700000012293, 9139187.66330000013113 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 6 Yogyakarta", "X": 430235.0821, "Y": 9140148.4726 }, "geometry": { "type": "Point", "coordinates": [ 430235.0821, 9140148.4726 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 7 Yogyakarta", "X": 428414.5102, "Y": 9138720.0582 }, "geometry": { "type": "Point", "coordinates": [ 428414.510200000018813, 9138720.058199999853969 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 8 Yogyakarta", "X": 430882.8818, "Y": 9139775.4634000007 }, "geometry": { "type": "Point", "coordinates": [ 430882.881799999973737, 9139775.463400000706315 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 9 Yogyakarta", "X": 431243.5343, "Y": 9139796.6538999993 }, "geometry": { "type": "Point", "coordinates": [ 431243.5343, 9139796.653899999335408 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 10 Yogyakarta", "X": 431183.1699, "Y": 9135043.0537 }, "geometry": { "type": "Point", "coordinates": [ 431183.169899999978952, 9135043.0537 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 11 Yogyakarta", "X": 428689.8379, "Y": 9138565.2048000004 }, "geometry": { "type": "Point", "coordinates": [ 428689.837899999984074, 9138565.204800000414252 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 12 Yogyakarta", "X": 429441.1064, "Y": 9139270.9047999997 }, "geometry": { "type": "Point", "coordinates": [ 429441.106399999989662, 9139270.904799999669194 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 13 Yogyakarta", "X": 429472.6538, "Y": 9135593.5401000008 }, "geometry": { "type": "Point", "coordinates": [ 429472.653799999970943, 9135593.540100000798702 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 14 Yogyakarta", "X": 429411.4189, "Y": 9139218.4267999995 }, "geometry": { "type": "Point", "coordinates": [ 429411.418899999989662, 9139218.426799999549985 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 15 Yogyakarta", "X": 431227.6555, "Y": 9138705.9423999991 }, "geometry": { "type": "Point", "coordinates": [ 431227.6555, 9138705.942399999126792 ] } },
+{ "type": "Feature", "properties": { "Nama": "SMP Negeri 16 Yogyakarta", "X": 429358.251, "Y": 9136472.5103999991 }, "geometry": { "type": "Point", "coordinates": [ 429358.25099999998929, 9136472.51039999909699 ] } }
+]
+}
